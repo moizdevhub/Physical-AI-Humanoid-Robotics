@@ -108,7 +108,7 @@ const config: Config = {
             },
             {
               label: 'Modules',
-              to: '/docs/intro',
+              to: '/',
             },
             {
               label: 'Capstone Project',
