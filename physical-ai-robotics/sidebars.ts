@@ -22,6 +22,10 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         'modules/module-02-digital-twin/index',
+        'modules/module-02-digital-twin/lesson-01-simulation-fundamentals',
+        'modules/module-02-digital-twin/lesson-02-gazebo-basics',
+        'modules/module-02-digital-twin/lesson-03-urdf-models',
+        'modules/module-02-digital-twin/exercise-humanoid-gazebo',
       ],
     },
     {
