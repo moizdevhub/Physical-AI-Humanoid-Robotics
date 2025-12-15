@@ -13,6 +13,7 @@ const sidebars: SidebarsConfig = {
         'modules/module-01-robotic-nervous-system/lesson-01-ros2-basics',
         'modules/module-01-robotic-nervous-system/lesson-02-publishers-subscribers',
         'modules/module-01-robotic-nervous-system/lesson-03-services-actions',
+        'modules/module-01-robotic-nervous-system/exercise-ros2-workspace',
       ],
     },
     {
