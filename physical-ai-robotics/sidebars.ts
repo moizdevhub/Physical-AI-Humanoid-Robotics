@@ -1,17 +1,5 @@
 import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
-
-/**
- * Creating a sidebar enables you to:
- - create an ordered group of docs
- - render a sidebar for each doc of that group
- - provide next/previous navigation
-
- The sidebars can be generated from the filesystem, or explicitly defined here.
-
- Create as many sidebars as you want.
- */
 const sidebars: SidebarsConfig = {
   tutorialSidebar: [
     'intro',
@@ -22,7 +10,9 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         'modules/module-01-robotic-nervous-system/index',
-        // Lessons will be added in Phase 3
+        'modules/module-01-robotic-nervous-system/lesson-01-ros2-basics',
+        'modules/module-01-robotic-nervous-system/lesson-02-publishers-subscribers',
+        'modules/module-01-robotic-nervous-system/lesson-03-services-actions',
       ],
     },
     {
@@ -31,7 +21,6 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         'modules/module-02-digital-twin/index',
-        // Lessons will be added in Phase 4
       ],
     },
     {
@@ -40,7 +29,6 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         'modules/module-03-ai-robot-brain/index',
-        // Lessons will be added in Phase 5
       ],
     },
     {
@@ -49,7 +37,6 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         'modules/module-04-vision-language-action/index',
-        // Lessons will be added in Phase 6
       ],
     },
     {
@@ -58,7 +45,6 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         'capstone/index',
-        // Project pages will be added in Phase 7
       ],
     },
     'glossary',

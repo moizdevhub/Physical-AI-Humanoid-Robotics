@@ -1,0 +1,8 @@
+Placeholder for ROS 2 graph diagram.
+
+This diagram will show:
+- Nodes (rectangles): imu_sensor_node, balance_controller, motor_controller
+- Topics (ovals): /imu/data, /joint_commands  
+- Arrows showing data flow direction
+
+To be created as PNG image.
