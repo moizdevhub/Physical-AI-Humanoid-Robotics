@@ -46,6 +46,10 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         'modules/module-04-vision-language-action/index',
+        'modules/module-04-vision-language-action/lesson-01-computer-vision',
+        'modules/module-04-vision-language-action/lesson-02-vision-language-action',
+        'modules/module-04-vision-language-action/lesson-03-manipulation-tasks',
+        'modules/module-04-vision-language-action/exercise-object-detection-grasping',
       ],
     },
     {
