@@ -34,6 +34,10 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         'modules/module-03-ai-robot-brain/index',
+        'modules/module-03-ai-robot-brain/lesson-01-planning-algorithms',
+        'modules/module-03-ai-robot-brain/lesson-02-reinforcement-learning',
+        'modules/module-03-ai-robot-brain/lesson-03-behavior-trees',
+        'modules/module-03-ai-robot-brain/exercise-navigation-planning',
       ],
     },
     {
