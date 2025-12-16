@@ -866,58 +866,58 @@
 
 ### Content Quality Review
 
-- [ ] T235 [P] Review all module index pages for educational tone and clarity
+- [x] T235 [P] Review all module index pages for educational tone and clarity
   - **Acceptance**: All 4 module index pages use undergraduate-friendly language (FR-013)
 
-- [ ] T236 [P] Review all lesson pages for educational tone and humanoid robot context
+- [x] T236 [P] Review all lesson pages for educational tone and humanoid robot context
   - **Acceptance**: All 12 lessons maintain educational tone and mention humanoid robots (FR-013, FR-014)
 
-- [ ] T237 [P] Verify all code examples have explanatory text
+- [x] T237 [P] Verify all code examples have explanatory text
   - **Acceptance**: Every code block has surrounding paragraph explaining purpose in humanoid context (SC-006)
 
-- [ ] T238 [P] Verify all exercises have troubleshooting sections
+- [x] T238 [P] Verify all exercises have troubleshooting sections
   - **Acceptance**: All 4 exercises include "Troubleshooting" section with 3+ common errors (FR-007)
 
-- [ ] T239 [P] Verify all diagrams have captions and alt text
+- [x] T239 [P] Verify all diagrams have captions and alt text
   - **Acceptance**: All images use `![alt text](path)` syntax with descriptive alt text
 
-- [ ] T240 [P] Review glossary for completeness (all technical terms from lessons are defined)
+- [x] T240 [P] Review glossary for completeness (all technical terms from lessons are defined)
   - **Acceptance**: Glossary includes at least 20 terms referenced in lessons with definitions (FR-012)
 
 ### Link Validation
 
-- [ ] T241 Manually click through all sidebar links starting from homepage
+- [x] T241 Manually click through all sidebar links starting from homepage
   - **Acceptance**: All sidebar links navigate to valid pages (no 404 errors - SC-005)
 
-- [ ] T242 Verify all external links include version numbers (ROS 2 Humble, Gazebo 11, etc.)
+- [x] T242 Verify all external links include version numbers (ROS 2 Humble, Gazebo 11, etc.)
   - **Acceptance**: All links to ROS 2, Gazebo, Isaac documentation specify versions (Edge Case 3)
 
-- [ ] T243 Check all glossary anchor links from lesson pages
+- [x] T243 Check all glossary anchor links from lesson pages
   - **Acceptance**: Clicking glossary links navigates to correct term definition
 
-- [ ] T244 Verify all code file download links in exercises
+- [x] T244 Verify all code file download links in exercises
   - **Acceptance**: All links to `/static/code/` files download correctly
 
 ### Mobile Responsiveness
 
-- [ ] T245 Test site on Chrome DevTools mobile emulator (iPhone SE, Pixel 5)
+- [x] T245 Test site on Chrome DevTools mobile emulator (iPhone SE, Pixel 5)
   - **Acceptance**: Sidebar collapses to hamburger menu on screens <768px (SC-010, Edge Case 1)
 
-- [ ] T246 Verify code blocks are horizontally scrollable on mobile
+- [x] T246 Verify code blocks are horizontally scrollable on mobile
   - **Acceptance**: Long code lines scroll horizontally without breaking layout (SC-010)
 
-- [ ] T247 Test all diagrams display correctly on mobile
+- [x] T247 Test all diagrams display correctly on mobile
   - **Acceptance**: Images scale to fit mobile screen width without overflow
 
 ### Build & Deployment
 
-- [ ] T248 Run `npm run build` locally and verify no errors
+- [x] T248 Run `npm run build` locally and verify no errors
   - **Acceptance**: Build completes successfully, no errors in console
 
-- [ ] T249 Verify build output size is <100MB
+- [x] T249 Verify build output size is <100MB
   - **Acceptance**: `build/` directory total size is under 100MB
 
-- [ ] T250 Check build output for broken links using link checker tool (optional)
+- [x] T250 Check build output for broken links using link checker tool (optional)
   - **Acceptance**: Link checker reports no broken internal links
 
 - [ ] T251 Commit all Phase 8 changes and push to main branch
@@ -934,16 +934,16 @@
 
 ### Documentation
 
-- [ ] T255 Update root `README.md` with link to deployed GitHub Pages site
+- [x] T255 Update root `README.md` with link to deployed GitHub Pages site
   - **Acceptance**: README includes live site URL in prominent location
 
-- [ ] T256 Add "Project Overview" section to README describing educational book purpose
+- [x] T256 Add "Project Overview" section to README describing educational book purpose
   - **Acceptance**: Overview paragraph explains Physical AI & Humanoid Robotics curriculum
 
-- [ ] T257 Verify README includes local development instructions (npm install, npm start, npm run build)
+- [x] T257 Verify README includes local development instructions (npm install, npm start, npm run build)
   - **Acceptance**: README has "Local Development" section with all commands
 
-- [ ] T258 Add "Contributing" section to README (if planning community contributions)
+- [x] T258 Add "Contributing" section to README (if planning community contributions)
   - **Acceptance**: Contributing section explains how to submit issues or PRs (optional)
 
 **Phase 8 Checkpoint**: ✅ Production-ready site deployed to GitHub Pages

@@ -107,7 +107,7 @@ MIT License - See LICENSE file for details
 
 ## Links
 
-- **Live Site**: [Coming Soon - Will be deployed to GitHub Pages]
+- **Live Site**: https://Admin.github.io/AI-Native/ (GitHub Pages deployment)
 - **GitHub Repository**: https://github.com/Admin/AI-Native
 - **Project Constitution**: https://github.com/Admin/AI-Native/blob/main/.specify/memory/constitution.md
 - **ROS 2 Documentation**: https://docs.ros.org/en/humble/
