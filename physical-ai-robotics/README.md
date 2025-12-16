@@ -80,7 +80,7 @@ physical-ai-robotics/
 
 ## Constitution & Governance
 
-This project follows strict educational principles defined in the [project constitution](https://github.com/Admin/AI-Native/blob/main/.specify/memory/constitution.md):
+This project follows strict educational principles defined in the project constitution:
 
 1. **Educational-First Design** - Focus on embodied intelligence learning
 2. **Hands-On Learning Mandate** - Verifiable code examples and exercises
@@ -107,9 +107,8 @@ MIT License - See LICENSE file for details
 
 ## Links
 
-- **Live Site**: https://Admin.github.io/AI-Native/ (GitHub Pages deployment)
-- **GitHub Repository**: https://github.com/Admin/AI-Native
-- **Project Constitution**: https://github.com/Admin/AI-Native/blob/main/.specify/memory/constitution.md
+- **Live Site**: https://moizdevhub.github.io/Physical-AI-Humanoid-Robotics/ (GitHub Pages deployment)
+- **GitHub Repository**: https://github.com/moizdevhub/Physical-AI-Humanoid-Robotics
 - **ROS 2 Documentation**: https://docs.ros.org/en/humble/
 
 ## Support

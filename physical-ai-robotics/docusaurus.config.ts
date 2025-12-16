@@ -15,15 +15,15 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://Admin.github.io',
+  url: 'https://moizdevhub.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/AI-Native/',
+  baseUrl: '/Physical-AI-Humanoid-Robotics/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'Admin', // Usually your GitHub org/user name.
-  projectName: 'AI-Native', // Usually your repo name.
+  organizationName: 'moizdevhub', // Usually your GitHub org/user name.
+  projectName: 'Physical-AI-Humanoid-Robotics', // Usually your repo name.
 
   onBrokenLinks: 'throw',
 
