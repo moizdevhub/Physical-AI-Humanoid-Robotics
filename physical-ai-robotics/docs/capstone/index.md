@@ -124,13 +124,13 @@ Past students have built:
 - **Sample URDF Models:** Humanoid robot models compatible with Gazebo (coming soon)
 - **Troubleshooting Guide:** Common integration issues and fixes (coming soon)
 
-## Detailed Pages (Coming Soon)
+## Detailed Guides
 
-<!-- Future pages to be created:
-- Project Description & Scenarios — Detailed examples and variations  
-- Requirements & Rubric — Comprehensive grading criteria
-- Submission Guidelines — How to package and submit your project
--->
+Ready to dive deeper? Explore these comprehensive guides:
+
+- **[Project Scenarios](project-scenarios.md)** — Detailed examples and project ideas
+- **[Requirements & Rubric](requirements-rubric.md)** — Complete evaluation criteria and grading
+- **[Submission Guidelines](submission-guidelines.md)** — How to package and submit your project
 
 ---
 

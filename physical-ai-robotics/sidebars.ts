@@ -58,6 +58,9 @@ const sidebars: SidebarsConfig = {
       collapsed: false,
       items: [
         'capstone/index',
+        'capstone/project-scenarios',
+        'capstone/requirements-rubric',
+        'capstone/submission-guidelines',
       ],
     },
     'glossary',
