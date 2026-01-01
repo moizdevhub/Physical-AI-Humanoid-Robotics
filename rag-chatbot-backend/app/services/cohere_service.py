@@ -45,7 +45,7 @@ class CohereService:
             return []
 
         # Cohere API supports up to 96 texts per batch
-        batch_size = 50  # Conservative batch size
+        batch_size = 10  # Very conservative for free tier
         all_embeddings = []
 
         for i in range(0, len(texts), batch_size):
@@ -53,9 +53,9 @@ class CohereService:
             embeddings = await self._embed_with_retry(batch, input_type)
             all_embeddings.extend(embeddings)
 
-            # Rate limiting: 2 requests per second max
+            # Rate limiting: Conservative for free tier (~1 request per 5 seconds)
             if i + batch_size < len(texts):
-                await asyncio.sleep(0.5)
+                await asyncio.sleep(5.0)
 
         logger.info(f"✅ Generated {len(all_embeddings)} embeddings")
         return all_embeddings
@@ -92,7 +92,7 @@ class CohereService:
                 return response.embeddings
 
             except Exception as e:
-                wait_time = 2 ** attempt  # Exponential backoff: 1s, 2s, 4s
+                wait_time = 5 * (2 ** attempt)  # Exponential backoff: 5s, 10s, 20s (conservative for free tier)
                 logger.warning(
                     f"⚠️  Embedding attempt {attempt + 1}/{max_retries} failed: {e}. "
                     f"Retrying in {wait_time}s..."

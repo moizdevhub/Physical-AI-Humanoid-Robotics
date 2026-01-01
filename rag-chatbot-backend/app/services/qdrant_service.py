@@ -124,17 +124,26 @@ class QdrantService:
                     )
                 query_filter = Filter(must=conditions) if conditions else None
 
-            # Perform search
-            results = self.client.search(
+            # Perform search (run in thread as QdrantClient is sync)
+            import asyncio
+            results = await asyncio.to_thread(
+                self.client.query_points,
                 collection_name=collection_name,
-                query_vector=query_vector,
+                query=query_vector,
                 limit=limit,
                 query_filter=query_filter
             )
 
-            # Format results
+            # Format results - query_points returns (QueryResponse, status)
+            # Extract points from response
+            if isinstance(results, tuple):
+                query_response, _ = results
+                points = query_response.points if hasattr(query_response, 'points') else query_response
+            else:
+                points = results.points if hasattr(results, 'points') else results
+
             formatted_results = []
-            for result in results:
+            for result in points:
                 formatted_results.append({
                     "id": result.id,
                     "score": result.score,

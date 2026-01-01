@@ -84,12 +84,7 @@ class MainAgent:
         logger.info(f"Processing query: {request.query[:100]}...")
 
         # Step 1: Route query
-        route = await error_handler.safe_execute(
-            self.router_agent.route_query,
-            request.query,
-            request.user_context,
-            category=ErrorCategory.UNKNOWN_ERROR
-        )
+        route = self.router_agent.route_query(request.query, request.user_context)
 
         logger.info(
             f"Query routed: intent={route.intent.value}, "
@@ -154,9 +149,10 @@ class MainAgent:
             category=ErrorCategory.RETRIEVAL_ERROR
         )
 
+        top_score = retrieval_result.chunks[0].score if retrieval_result.chunks else 0.0
         logger.info(
             f"✅ Retrieved {retrieval_result.total_retrieved} chunks "
-            f"(top score: {retrieval_result.chunks[0].score:.4f if retrieval_result.chunks else 0:.4f})"
+            f"(top score: {top_score:.4f})"
         )
 
         # Step 5: Generate answer

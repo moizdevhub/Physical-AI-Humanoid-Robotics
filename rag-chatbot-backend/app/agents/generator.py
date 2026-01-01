@@ -46,7 +46,7 @@ class GeneratorAgent:
 
     def __init__(self):
         """Initialize generator with Gemini model."""
-        self.model_name = "gemini-1.5-flash"  # Fast and efficient
+        self.model_name = "gemini-2.5-flash"  # Fast and efficient (updated to latest)
         self.model = genai.GenerativeModel(self.model_name)
 
     async def generate_answer(self, request: GenerationRequest) -> GenerationResult:
