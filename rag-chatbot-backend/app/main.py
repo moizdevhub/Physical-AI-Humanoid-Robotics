@@ -7,7 +7,8 @@ for the humanoid robotics digital book.
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.config import settings
-from app.api import health
+from app.api import health, chat
+from app.middleware.rate_limiter import RateLimiterMiddleware
 
 # Initialize FastAPI application
 app = FastAPI(
@@ -27,8 +28,12 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Configure rate limiter middleware
+app.add_middleware(RateLimiterMiddleware)
+
 # Include routers
 app.include_router(health.router, tags=["Health"])
+app.include_router(chat.router, tags=["Chat"])
 
 
 @app.get("/")
