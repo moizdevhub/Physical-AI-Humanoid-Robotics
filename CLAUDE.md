@@ -208,3 +208,9 @@ Wait for consent; never auto-create ADRs. Group related decisions (stacks, authe
 
 ## Code Standards
 See `.specify/memory/constitution.md` for code quality, testing, performance, security, and architecture principles.
+
+## Active Technologies
+- Python 3.11+ (async/await, modern type hints) (001-rag-chatbot-integration)
+
+## Recent Changes
+- 001-rag-chatbot-integration: Added Python 3.11+ (async/await, modern type hints)
