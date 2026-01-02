@@ -118,21 +118,38 @@ class MainAgent:
                     metadata={"cache_key": cache_key}
                 )
 
-        # Step 3: Generate query embedding
+        # Step 3: Generate query embedding with graceful degradation (T055)
         logger.info("Generating query embedding...")
-        embedding_result: EmbeddingResult = await error_handler.retry_with_backoff(
-            self.embedding_agent.generate_query_embedding,
-            request.query,
-            max_retries=3,
-            category=ErrorCategory.EMBEDDING_ERROR
-        )
+        try:
+            embedding_result: EmbeddingResult = await error_handler.retry_with_backoff(
+                self.embedding_agent.generate_query_embedding,
+                request.query,
+                max_retries=3,
+                category=ErrorCategory.EMBEDDING_ERROR
+            )
 
-        logger.info(
-            f"✅ Embedding generated (dimension: {embedding_result.dimension}, "
-            f"model: {embedding_result.model})"
-        )
+            logger.info(
+                f"✅ Embedding generated (dimension: {embedding_result.dimension}, "
+                f"model: {embedding_result.model})"
+            )
+        except Exception as e:
+            logger.error(f"❌ Embedding generation failed after retries: {e}")
+            # T055: Graceful degradation - return error message
+            processing_time = (datetime.now() - start_time).total_seconds() * 1000
+            return QueryResponse(
+                answer="I apologize, but I'm unable to process your question at the moment. The search system is temporarily unavailable. Please try again in a few moments.",
+                sources=[],
+                confidence=0.0,
+                cached=False,
+                intent=route.intent,
+                search_mode=route.search_mode,
+                tokens_used=0,
+                model="error",
+                processing_time_ms=processing_time,
+                metadata={"error": "embedding_service_unavailable"}
+            )
 
-        # Step 4: Retrieve relevant chunks
+        # Step 4: Retrieve relevant chunks with graceful degradation (T055)
         logger.info(f"Retrieving top-{request.max_results} chunks...")
 
         retrieval_request = RetrievalRequest(
@@ -142,20 +159,37 @@ class MainAgent:
             collection_name="robotics_book_chunks"
         )
 
-        retrieval_result = await error_handler.retry_with_backoff(
-            self.retriever_agent.retrieve,
-            retrieval_request,
-            max_retries=3,
-            category=ErrorCategory.RETRIEVAL_ERROR
-        )
+        try:
+            retrieval_result = await error_handler.retry_with_backoff(
+                self.retriever_agent.retrieve,
+                retrieval_request,
+                max_retries=3,
+                category=ErrorCategory.RETRIEVAL_ERROR
+            )
 
-        top_score = retrieval_result.chunks[0].score if retrieval_result.chunks else 0.0
-        logger.info(
-            f"✅ Retrieved {retrieval_result.total_retrieved} chunks "
-            f"(top score: {top_score:.4f})"
-        )
+            top_score = retrieval_result.chunks[0].score if retrieval_result.chunks else 0.0
+            logger.info(
+                f"✅ Retrieved {retrieval_result.total_retrieved} chunks "
+                f"(top score: {top_score:.4f})"
+            )
+        except Exception as e:
+            logger.error(f"❌ Qdrant retrieval failed after retries: {e}")
+            # T055: Graceful degradation - return error message
+            processing_time = (datetime.now() - start_time).total_seconds() * 1000
+            return QueryResponse(
+                answer="The search service is temporarily unavailable. Please try again in a few moments.",
+                sources=[],
+                confidence=0.0,
+                cached=False,
+                intent=route.intent,
+                search_mode=route.search_mode,
+                tokens_used=0,
+                model="error",
+                processing_time_ms=processing_time,
+                metadata={"error": "qdrant_service_unavailable"}
+            )
 
-        # Step 5: Generate answer
+        # Step 5: Generate answer with graceful degradation (T055)
         logger.info("Generating answer with Gemini...")
 
         generation_request = GenerationRequest(
@@ -164,12 +198,45 @@ class MainAgent:
             max_tokens=500
         )
 
-        generation_result = await error_handler.retry_with_backoff(
-            self.generator_agent.generate_answer,
-            generation_request,
-            max_retries=3,
-            category=ErrorCategory.GENERATION_ERROR
-        )
+        try:
+            generation_result = await error_handler.retry_with_backoff(
+                self.generator_agent.generate_answer,
+                generation_request,
+                max_retries=3,
+                category=ErrorCategory.GENERATION_ERROR
+            )
+        except Exception as e:
+            logger.error(f"❌ Gemini generation failed after retries: {e}")
+            # T055: Graceful degradation - return retrieval-only response with raw chunks
+            logger.warning("Falling back to retrieval-only mode")
+
+            # Format chunks as bullet points
+            raw_chunks_text = "\n\nHere are relevant excerpts from the book:\n\n"
+            for i, chunk in enumerate(retrieval_result.chunks[:3], 1):
+                raw_chunks_text += f"{i}. From {chunk.chapter}, {chunk.section}:\n"
+                raw_chunks_text += f"   (Relevance: {chunk.score:.2f})\n\n"
+
+            processing_time = (datetime.now() - start_time).total_seconds() * 1000
+
+            return QueryResponse(
+                answer=f"I found relevant information but cannot generate a complete answer at the moment.{raw_chunks_text}",
+                sources=[
+                    Citation(
+                        chapter=chunk.chapter,
+                        section=chunk.section,
+                        relevance_score=chunk.score
+                    )
+                    for chunk in retrieval_result.chunks
+                ],
+                confidence=self._calculate_confidence(retrieval_result.chunks, route.confidence),
+                cached=False,
+                intent=route.intent,
+                search_mode=route.search_mode,
+                tokens_used=0,
+                model="retrieval_only",
+                processing_time_ms=processing_time,
+                metadata={"degraded_mode": "retrieval_only", "error": "generation_service_unavailable"}
+            )
 
         logger.info(
             f"✅ Answer generated ({len(generation_result.answer)} chars, "

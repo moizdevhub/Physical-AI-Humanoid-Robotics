@@ -9,7 +9,9 @@ from qdrant_client.models import (
     PointStruct,
     Filter,
     FieldCondition,
-    MatchValue
+    MatchValue,
+    PayloadSchemaType,
+    HnswConfigDiff
 )
 from app.config import settings
 import logging
@@ -36,7 +38,11 @@ class QdrantService:
         distance: str = "Cosine"
     ) -> bool:
         """
-        Create a new collection in Qdrant.
+        Create a new collection in Qdrant with optimizations.
+
+        T051 Optimizations:
+        - HNSW index for faster similarity search
+        - Payload indexing on 'chapter' and 'doc_type' fields
 
         Args:
             collection_name: Name of the collection to create
@@ -53,19 +59,57 @@ class QdrantService:
                 "Dot": Distance.DOT
             }
 
+            # Create collection with HNSW optimization (T051)
             self.client.create_collection(
                 collection_name=collection_name,
                 vectors_config=VectorParams(
                     size=vector_size,
-                    distance=distance_map.get(distance, Distance.COSINE)
+                    distance=distance_map.get(distance, Distance.COSINE),
+                    hnsw_config=HnswConfigDiff(
+                        m=16,  # Number of edges per node (balance between speed and quality)
+                        ef_construct=100,  # Quality of index construction
+                        full_scan_threshold=10000  # Use HNSW for collections >10k points
+                    )
                 )
             )
-            logger.info(f"✅ Created collection: {collection_name}")
+
+            # Create payload indexes for faster filtering (T051)
+            await self._create_payload_indexes(collection_name)
+
+            logger.info(f"✅ Created optimized collection: {collection_name} (HNSW enabled)")
             return True
 
         except Exception as e:
             logger.error(f"❌ Failed to create collection {collection_name}: {e}")
             raise
+
+    async def _create_payload_indexes(self, collection_name: str) -> None:
+        """
+        Create payload indexes for optimized filtering (T051).
+
+        Args:
+            collection_name: Name of the collection
+        """
+        try:
+            # Index on 'chapter' field for chapter-specific searches
+            self.client.create_payload_index(
+                collection_name=collection_name,
+                field_name="chapter",
+                field_schema=PayloadSchemaType.KEYWORD
+            )
+            logger.info(f"✅ Created payload index on 'chapter'")
+
+            # Index on 'doc_type' field for document type filtering
+            self.client.create_payload_index(
+                collection_name=collection_name,
+                field_name="doc_type",
+                field_schema=PayloadSchemaType.KEYWORD
+            )
+            logger.info(f"✅ Created payload index on 'doc_type'")
+
+        except Exception as e:
+            # Non-critical error - indexes may already exist
+            logger.warning(f"⚠️  Could not create payload indexes: {e}")
 
     async def upsert_points(
         self,
@@ -102,12 +146,17 @@ class QdrantService:
         filters: Optional[Dict[str, Any]] = None
     ) -> List[Dict[str, Any]]:
         """
-        Perform similarity search in a collection.
+        Perform optimized similarity search in a collection.
+
+        T051 Optimizations:
+        - Limit top_k to 5 chunks (balance quality vs. speed)
+        - Uses HNSW index for fast approximate search
+        - Leverages payload indexes for filtered searches
 
         Args:
             collection_name: Name of the collection to search
             query_vector: Query embedding vector
-            limit: Maximum number of results to return
+            limit: Maximum number of results to return (default: 5, max recommended: 10)
             filters: Optional metadata filters (e.g., {"chapter": "Chapter 3"})
 
         Returns:
