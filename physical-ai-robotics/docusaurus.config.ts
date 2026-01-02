@@ -9,16 +9,19 @@ const config: Config = {
   tagline: 'Bridging Digital Intelligence and Physical Embodiment',
   favicon: 'img/favicon.ico',
 
-  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
-  future: {
-    v4: true, // Improve compatibility with the upcoming Docusaurus v4
-  },
+  // Future flags disabled to prevent homepage baseUrl detection issues
+  // future: {
+  //   v4: true,
+  // },
 
   // Set the production url of your site here
   url: 'https://moizdevhub.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/Physical-AI-Humanoid-Robotics/',
+
+  // Trailing slash behavior for URLs
+  trailingSlash: false,
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
